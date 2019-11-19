@@ -2,6 +2,7 @@ package br.ufba.dcc.wiser.soft_iot.mapping_devices.controller;
 
 import br.ufba.dcc.wiser.iotreactive.model.Device;
 import br.ufba.dcc.wiser.iotreactive.model.Sensor;
+import br.ufba.dcc.wiser.soft_iot.mapping_devices.controller.util.Util;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +74,6 @@ public class ControllerImpl extends AbstractVerticle implements Controller {
     }
 
     public void addIoTMessageChannel(List<Device> listDevices, BundleContext context) {
-           System.out.println("nnn");
 
         try{
         Gson json = new Gson();
@@ -85,10 +85,9 @@ public class ControllerImpl extends AbstractVerticle implements Controller {
 
         EventBus eventBus = (EventBus) context.getService(eventBusRef);
 
-        vetx.setPeriodic(2000, id -> {
-            System.out.println("publish " + devices);
+        vetx.setPeriodic(Util.timepublish, id -> {
 
-            eventBus.publish(enderecoBarramento, devices);
+            eventBus.publish(Util.enderecoBarramento, devices);
             System.out.println("We now have a clustered event bus: " + eventBus);
         });
         
